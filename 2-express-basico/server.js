@@ -1,14 +1,19 @@
 // 1
 // GET
 // http://localhost:8080/usuarios/123
+// req.params.idusuarios
+// GET obtener Usuario  x Id
+// PUT delete Usuario x Id 
 
 // 2
 // GET
 // http://localhost:8080/usuarios?id=123&nombre=ventas
-
+// const params= req.query
 // 3
 // POST
 // http://localhost:8080/usuarios
+// REGISTRAR USUARIO {BODY}
+// req.body
 
 
 //modulo terceros
@@ -59,7 +64,14 @@ app.get('/' , (req, res) =>{
 //----------
 //Listar Usuarios
 //------------
+//?param1=15&variable=2
 app.get('/usuarios', (req, res) => {
+
+  const params= req.query
+
+  console.log(params);
+  
+
   return res.json(
     {
       result: true,
@@ -71,6 +83,7 @@ app.get('/usuarios', (req, res) => {
 //----------
 //get usuario
 //------------
+// http://localhost:8080/usuarios/123
 app.get('/usuarios/:idusuarios', (req, res) => {
 
   console.log('idusuarios: ',req.params.idusuarios);
@@ -91,6 +104,7 @@ app.get('/usuarios/:idusuarios', (req, res) => {
 //----------
 //post usuario
 //------------
+//body
 app.post('/usuarios', (req, res) => {
 
   console.log(req.body);

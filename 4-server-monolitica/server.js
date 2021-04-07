@@ -5,6 +5,7 @@ const app = express();
 app.set('view engine', 'hbs');
 app.use( express.static('public') );
 
+app.get()
 
 data = [
   { id: 1, categoria: "Polos", producto: "Leevy", },
@@ -21,7 +22,7 @@ app.get('/productos', (req, res) => {
 })
 
 
-
+ 
 app.listen(8080, () => {
   console.log("Server Ok 8080");
   
