@@ -1,14 +1,20 @@
 const ModelCategoria = require('../models/categoria_model');
 
-const data = [
-  {
-    id: 123,
-    nombre: "Polos"
-  },{
-    id: 124,
-    nombre: "Pantalones"
+function errorHandler(data, next, err = null){
+
+  if(err){
+    return next(err);
   }
-];
+
+  if(!data){
+
+    let error = new Error('No existe !');
+    error.statusCode = 404;
+    return next(error)
+    
+  }
+
+}
 
 //==========
 //	Listar Categorias
@@ -17,23 +23,18 @@ const data = [
 function listar(req, res) {
   
   ModelCategoria.find().exec( (err, items) =>{
-    if(err){
-      return res.status(500).json({
-        error: err
-      })
-    }
-
-    if(!items){
-       return res.status(404).json({
-        data: "No existe"
-      })
-    }
+    
+    if( err || !items  ) 
+    
+    return errorHandler(items, next, err)
 
     return res.json({
       items: items
     })
 
   } )
+  
+  
 
 }
 
@@ -47,21 +48,14 @@ function getCategoria(req, res) {
 
 
   ModelCategoria.findById( id, (err, docCategoria) =>{
-    if(err){
-      return res.status(500).json({
-        error: err
-      })
-    }
 
-    if(!docCategoria){
-       return res.status(404).json({
-        message: "No existe"
-      })
-    }
+    if( err || !docCategoria  ) return errorHandler(docCategoria, next, err)
 
     return res.json({
       data: docCategoria
     })
+
+    
 
   } );
   
@@ -72,7 +66,7 @@ function getCategoria(req, res) {
 //==========
 //	Guardar Categoria
 //==========
-function guardar(req, res){
+function guardar(req, res, next){
 
   console.log(req.body);
   
@@ -83,17 +77,15 @@ function guardar(req, res){
 
   const modelCategoria = new ModelCategoria(data);
   modelCategoria.save( (err, docCategoria) => {
-    
-    if(err){
-      return res.status(500).json({
-        error: err
-      })
-    }
+
+    if( err || !docCategoria  ) return errorHandler(docCategoria, next, err)
 
     return res.json({
       data: docCategoria
     })
+    
 
+    
     
     
   })
@@ -110,21 +102,14 @@ function borrar(req, res){
   
   const id = req.params.id;
   ModelCategoria.findByIdAndRemove( id, (err, docCategoria) => {
-    if(err){
-      return res.status(500).json({
-        error: err
-      })
-    }
 
-    if(!docCategoria){
-       return res.status(404).json({
-        message: "No existe"
-      })
-    }
+    if( err || !docCategoria  ) return errorHandler(docCategoria, next, err)
 
     return res.json({
       data: docCategoria
     })
+
+    
 
 
   } )
@@ -142,21 +127,13 @@ function update(req, res){
   }
 
   ModelCategoria.findByIdAndUpdate(id, { categoria_nombre: req.body.categoria_nombre  } ,{new: true},  (err, docCategoria) => {
-    if(err){
-      return res.status(500).json({
-        error: err
-      })
-    }
 
-    if(!docCategoria){
-       return res.status(404).json({
-        message: "No existe"
-      })
-    }
+    if( err || !docCategoria  ) return errorHandler(docCategoria, next, err)
 
     return res.json({
       data: docCategoria
     })
+    
   })
 
 }
