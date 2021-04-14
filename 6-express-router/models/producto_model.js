@@ -1,12 +1,23 @@
+const ModelCategoria = require('./categoria_model');
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+const validator_categoria = async (val) =>{
+  let rpta = await ModelCategoria.exists(
+    { categoria_nombre : val }
+  );
+  
+  return rpta;
+  
+}
 
 var schemaProducto = new Schema({
 
   producto_nombre: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   descripcion: {
     type: String
@@ -17,7 +28,7 @@ var schemaProducto = new Schema({
   },
   stock: {
     type: Number,
-    required: true
+    required: 'Stock Requerido'
   },
   vendidos: {
     type: Number,
@@ -29,7 +40,11 @@ var schemaProducto = new Schema({
   },
   categoria_nombre: {
     type: String,
-    required: true
+    required: true,
+    // validate:{
+    //   validator: validator_categoria,
+    //   message : 'Categoria no Existe !'
+    // }
   },
   imagen: {
     data: Buffer,
@@ -38,6 +53,22 @@ var schemaProducto = new Schema({
 }, {
   timestamps: true
 });
+
+
+schemaProducto.path('categoria_nombre').validate(
+  {
+    validator: validator_categoria,
+    message : 'Categoria no Existe  v2 !'
+  }
+);
+
+
+//validators
+//methods schema
+//methods statics
+//campos virtuales
+//manejar Paths
+// Override JSON
 
 const model = mongoose.model('modelProducto', schemaProducto);
 

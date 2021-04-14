@@ -13,15 +13,15 @@ const {
 const router = express.Router();
 
 //Params
-
-router.param('productoId', productoById);
+//Middleware  - Router
+router.param('productoIdxxxxxx', productoById);
 
 
 //Rutas
 router.get('/producto', listar);
-router.get('/producto/:productoId', getxId);
+router.get('/producto/:productoIdxxxxxx', getxId);
 router.post('/producto', guardar);
-router.delete('/producto/:productoId', borrar); 
-router.put('/producto/:productoId', update); 
+router.delete('/producto/:productoIdxxxxxx', borrar); 
+router.put('/producto/:id', update); 
 
 module.exports = router;

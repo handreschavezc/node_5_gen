@@ -17,27 +17,13 @@ function errorHandler(data, next, err = null){
 
 }
 
-const data = [
-  {
-    id: 123,
-    categoria: "Polos",
-    producto: "Polo Rambo"
-  },{
-    id: 124,
-    categoria: "Polos",
-    producto: "Polo Levy"
-  }
-];
-
 //==========
-//Param 	productoById
+// [Param] 	productoById
 //==========
 
 function productoById(req, res, next, id) {
 
-  console.log('Metodo Param xxxxxxxxxxxxxxxx');
-
-
+  
   let myquery = ModelProducto.findById(id);
 
   myquery
@@ -45,7 +31,7 @@ function productoById(req, res, next, id) {
   .exec( (err, docProducto) => {
 
     if( err || !docProducto  ) return errorHandler(docProducto, next, err)
-
+    //cargamos en el request [docProducto]
     req.docProducto = docProducto;
     next();
 
@@ -140,18 +126,41 @@ function guardar(req, res, next){
 // Borrar Productos 
 //==========
 function borrar(req, res){
-  res.json({
-      message: "Guardado"
-    });
+
+  let docProducto = req.docProducto;
+
+  docProducto.disponible = false;
+  docProducto.save( (err,item ) => {
+
+    if( err || !item  ) return errorHandler(item, next, err)
+
+    return res.json({
+      items: item
+    })
+  })
+
 }
 
 //==========
 //	Actualizar Productos
 //==========
-function update(req, res){
-res.json({
-    message: "Guardado"
-  });
+function update(req, res, next){
+
+  let id = req.params.id;
+
+  ModelProducto.findByIdAndUpdate(
+    id, 
+    req.body ,
+    { new : true},
+    (err, docProducto) =>{
+      if( err || !docProducto  ) return errorHandler(docProducto, next, err)
+
+      return res.json({
+        items: docProducto
+      })
+    }
+  )
+
 }
 
 module.exports ={

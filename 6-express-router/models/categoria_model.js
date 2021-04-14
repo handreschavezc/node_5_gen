@@ -5,8 +5,7 @@ var schemaCategoria = mongoose.Schema({
 
   categoria_nombre: {
     type: String,
-    required: true,
-    unique: true
+    unique: 'xxxx'
   }
 
 });
