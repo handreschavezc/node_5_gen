@@ -27,7 +27,7 @@ function productoById(req, res, next, id) {
   let myquery = ModelProducto.findById(id);
 
   myquery
-  .select('-imagen')
+  // .select('-imagen')
   .exec( (err, docProducto) => {
 
     if( err || !docProducto  ) return errorHandler(docProducto, next, err)
@@ -77,9 +77,28 @@ function listar(req, res, next) {
 
 
 //==========
+//	Mostrar Imagen
+//==========
+
+
+const imagen = (req, res) =>{
+
+  console.log('req.docProducto:',req.docProducto);
+
+  res.set('Content-Type', req.docProducto.imagen.contentType);
+  res.set('xxxxx', 'aaaaabb');
+
+  return res.send(req.docProducto.imagen.data);
+  
+}
+
+//==========
 //	Guardar Productos
 //==========
 function guardar(req, res, next){
+
+
+
   
   let data = {
     producto_nombre : req.body.producto_nombre,
@@ -101,7 +120,7 @@ function guardar(req, res, next){
     
 
     modelProducto.imagen.data = req.files.imagen.data;
-    modelProducto.imagen.contentType = req.files.imagen.minetype;
+    modelProducto.imagen.contentType = req.files.imagen.mimetype;
   }
 
   modelProducto.save( (err, docProducto)  => {
@@ -169,6 +188,7 @@ module.exports ={
   listar,
   guardar,
   borrar,
-  update
+  update,
+  imagen
 }
 

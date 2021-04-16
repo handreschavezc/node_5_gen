@@ -42,28 +42,50 @@ var schemaUsuario = new Schema({
   }
 });
 
+// (docUsuario) -> this
+//reduce carro /
+schemaUsuario.methods.addCarro = function(docProducto){
 
-schemaUsuario.methods.addCarro = function(producto){
+  let index = this.cart.items.findIndex( item => {
+    return item.productId.toString() == docProducto._id.toString()
+  });
+
+  console.log('index:',index);
 
   let _cantidad = 1;
-  let newCartItems = [];
+  let newCartItems = [...this.cart.items];
 
-  newCartItems.push(
-    {
-      productId : producto._id,
+  //newCartItems[ 0, 1, 2]
+  //delete newCartItems[1]
+  //this.cart.items = newCartItems;
+  //this.save();
+
+
+
+  if(index >= 0){
+    _cantidad = this.cart.items[index].cantidad +1;
+    newCartItems[index].cantidad = _cantidad;
+    newCartItems[index].total = _cantidad * docProducto.precio;
+  }else{
+     newCartItems.push({
+      productId : docProducto._id,
       cantidad: _cantidad,
-      total: producto.precio
-    }
-  );
-
-  let newCart = {
-    items : newCartItems
+      total: docProducto.precio
+    })
   }
-
-  this.cart = newCart;
+  
+  this.cart.items = newCartItems;
   return this.save();
 
 }
+
+schemaUsuario.methods.clearCarrito = function(){
+
+  this.cart = { items: [] };
+  return this.save();
+
+}
+
 
 const model = mongoose.model('modelUsuario', schemaUsuario);
 

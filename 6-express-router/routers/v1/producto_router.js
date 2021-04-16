@@ -6,7 +6,8 @@ const {
   guardar, 
   borrar, 
   update,
-  productoById 
+  productoById ,
+  imagen
 } = require('../../controller/producto_controller');
 
 
@@ -20,6 +21,7 @@ router.param('productoIdxxxxxx', productoById);
 //Rutas
 router.get('/producto', listar);
 router.get('/producto/:productoIdxxxxxx', getxId);
+router.get('/producto/imagen/:productoIdxxxxxx', imagen);
 router.post('/producto', guardar);
 router.delete('/producto/:productoIdxxxxxx', borrar); 
 router.put('/producto/:id', update); 
