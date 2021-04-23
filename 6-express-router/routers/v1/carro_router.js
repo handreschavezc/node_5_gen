@@ -1,4 +1,5 @@
 const express = require('express');
+const { isAuth } = require('../../middleware/auth');
 
 const { 
   addCarro,
@@ -9,7 +10,7 @@ const {
 
 const router = express.Router();
 
-
+router.all('*',isAuth)
 
 //Rutas
 router.post('/carro', addCarro);

@@ -21,6 +21,7 @@ function errorHandler(data, next, err = null){
 }
 
 function login(req,res, next) {
+  
   let email = req.body.email;
   let password = req.body.password;
 
@@ -78,7 +79,8 @@ function signup (req, res, next) {
   let data = {
     nombre : req.body.nombre,
     email: req.body.email,
-    password : bcrypt.hashSync(req.body.password, salt)
+    password : bcrypt.hashSync(req.body.password, salt),
+    role: req.body.role
   }
 
   let modelusuario = new ModelUsuario(data);

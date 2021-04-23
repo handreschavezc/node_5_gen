@@ -4,7 +4,7 @@ const ModelUsuario = require('../models/usuario_model');
 const pSingUp = [
   
   body('nombre').trim().not().isEmpty().withMessage('nombre requerido'),
-
+  
   body('email').isEmail()
     .withMessage('ingrese un email valido')
     .custom( (value)=>{

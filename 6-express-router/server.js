@@ -3,9 +3,21 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 
+
 //Modulos Propios
 const routerV1 = require('./routers/v1/index');
 // const routerV2 = require('./routers/v2/index');
+
+
+
+console.log(` -${process.env.NODE_ENV}- `); //produccion
+console.log(` -${__dirname}- `); //desarrollo
+
+if(process.env.NODE_ENV === 'desarrollo' ){
+  require('dotenv').config({path: `${__dirname}/.env.desarrollo`})
+}else if(process.env.NODE_ENV === 'produccion' ){
+  require('dotenv').config()
+}
 
 
 ///////EXPRESS
@@ -47,8 +59,10 @@ app.use(function(err, req, res, next) {
 
 });
 
+// mongodb+srv://node5Gen:nSQMYUS2XlfuHNDv@cluster0.heeey.mongodb.net/test
+// nSQMYUS2XlfuHNDv
 
-mongoose.connect('mongodb://localhost/node5Gen', {
+mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
